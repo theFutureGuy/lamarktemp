@@ -35,6 +35,7 @@ const signUp = async () => {
 }
 
 const signOut =async () => {
+    FIREBASE_AUTH.signOut();
     
 }
 

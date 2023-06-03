@@ -1,9 +1,11 @@
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import React,{useEffect, useState} from 'react';
-import { FIREBASE_DB } from '../../firebaseConfig';
+import { FIREBASE_DB,FIREBASE_AUTH } from '../../firebaseConfig';
 import { doc, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
-
-
+import { NavigationProp } from '@react-navigation/native';
+interface RouterProps{
+    navigation:NavigationProp<any,any>;
+}
 
 
 
@@ -58,13 +60,15 @@ const List = ({navigation} : any) => {
             <Button onPress={addTemp} title="Add Temperature" disabled={temp === ''} />
         </View>
         <View>
-        {  temps.length > 0 && (
-            <View>
-            <FlatList data={temps} renderItem={(item) => renderTemps(item)} keyExtractor={(temp) => temp.id} />
+        {  temps.length > 0 && ():{}
+        <View>
+            <FlatList data={temps} renderItem={(item) => renderTemps(item)} keyExtractor={(temp) />=> temp.id} />
         }
+        <Button onPress={() => navigation.navigate('details')} title="Details Page" />
+        <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout" />
         </View>
 
-            </View>
+    </View>
     </View>
   )
 }
