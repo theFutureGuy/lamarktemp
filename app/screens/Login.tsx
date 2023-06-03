@@ -48,7 +48,7 @@ return (
                 loading ? <ActivityIndicator size="large" color="#0000f" /> :
                 <>
                     <Button title="Login by me" onPress={signIn} />
-                    <Button title="Register by click on me" onPress={signUp} />
+                    <Button title="Register by clicking me" onPress={signUp} />
                 </>
             }
             

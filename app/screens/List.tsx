@@ -1,7 +1,7 @@
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import React,{useEffect, useState} from 'react';
 import { FIREBASE_DB } from '../../firebaseConfig';
-import { Firestore, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
 
 
 
@@ -38,14 +38,12 @@ const List = ({navigation} : any) => {
         console.log("printing ...",doc)
     }
     const renderTemps = async (item:any) => {
-        const toggleDone = async() => {}
-        const deleteTemp = async() => {}
-
+       //const ref = doc(FIREBASE_DB,`temp/${item.id}`)
+        // const deleteTemp = async() => {deleteDoc(ref)}
 
         // console.log("Temps : ",item)
-        return <View>
-                <TouchableOpacity onPress={} />
-                    <Text>{/* {item.title} */}</Text>
+        return <View style={styles.tempContainer}>
+                  <Text style={styles.tempText}>{item.title}</Text>
                </View>
         
     }
@@ -88,6 +86,16 @@ input:{
     height:40, 
     borderRadius:7,
 },
-
+tempContainer:{
+    flexDirection:'row',
+    alignItems:'center',
+    backgroundColor:'#fff',
+    padding:10,
+    marginVertical:4,
+},
+tempText:{
+    flex:1,
+    paddingHorizontal:4,
+},
 })
 
