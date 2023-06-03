@@ -1,8 +1,7 @@
-import { Link, Stack, } from 'expo-router';
 import { ActivityIndicator, Button, KeyboardAvoidingView, StyleSheet, Text,TextInput,View } from 'react-native';
 import { StatusBar } from 'react-native';
 import React,{ useState } from 'react';
-import { FIREBASE_AUTH } from '../../Firebase';
+import { FIREBASE_AUTH } from '../../firebaseConfig';
 import { signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
 
 
