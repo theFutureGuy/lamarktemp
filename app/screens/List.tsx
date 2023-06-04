@@ -1,17 +1,15 @@
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import React,{useEffect, useState} from 'react';
-import { FIREBASE_DB,FIREBASE_AUTH } from '../../firebaseConfig';
-import { doc, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
-import { NavigationProp } from '@react-navigation/native';
-interface RouterProps{
-    navigation:NavigationProp<any,any>;
-}
+import { FIREBASE_DB } from '../../firebaseConfig';
+import { Firestore, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
+
+
 
 
 
 const List = ({navigation} : any) => {
 
-    const [temps,setTemps] = useState<any[]>([]);
+    const [temps,setTemps] = useState<any[]>([1,2,3,4]);
     const [temp,setTemp] = useState('');
 
     useEffect(() => {
@@ -27,28 +25,33 @@ const List = ({navigation} : any) => {
                         ...doc.data(),
                     });
                 })
-                setTemps(temps);
+                //setTemps(temps);
             },
         })
-
+        setTemp('23')
         return () => subscriber();
     },[]);
 
     const addTemp = async () => {
-        const doc = addDoc(collection(FIREBASE_DB,'temps'),{title:temp,done:false,created: Timestamp.now });
+        const doc = addDoc(collection(FIREBASE_DB,'temps'),{"title":temp,"done":'False'});
         setTemp('');
         console.log("printing ...",doc)
+       // console.log(temps)
     }
-    const renderTemps = async (item:any) => {
-       //const ref = doc(FIREBASE_DB,`temp/${item.id}`)
-        // const deleteTemp = async() => {deleteDoc(ref)}
+
+
+    /*const renderTemps = async (item:any) => {
+        const toggleDone = async() => {}
+        const deleteTemp = async() => {}
+
 
         // console.log("Temps : ",item)
-        return <View style={styles.tempContainer}>
-                  <Text style={styles.tempText}>{item.title}</Text>
+        return <View>
+                <TouchableOpacity  />
+                    <Text>{ {item.title} }</Text>
                </View>
         
-    }
+    }*/
 
   return (
     <View style={styles.container}>
@@ -56,19 +59,19 @@ const List = ({navigation} : any) => {
         <View style={styles.form} >
             {/* <Button onPress={ () =>navigation.navigate('Details')} title='Open Details' /> */}
             {/* <Button onPress={ () => addTemp()} title="Add Temperature" /> */}
-            <Text style={styles.input}>34</Text>
+            <Text style={styles.input}>{temp}</Text> 
             <Button onPress={addTemp} title="Add Temperature" disabled={temp === ''} />
         </View>
         <View>
-        {  temps.length > 0 && ():{}
-        <View>
-            <FlatList data={temps} renderItem={(item) => renderTemps(item)} keyExtractor={(temp) />=> temp.id} />
+        <Text>{temp}</Text>
+        {  temps.length > 0 && 
+            <View>
+            <FlatList data={temps} renderItem={(temps) => <Text>{temps.item}</Text>} keyExtractor={(temps) => temps.id} />
+            </View>
         }
-        <Button onPress={() => navigation.navigate('details')} title="Details Page" />
-        <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout" />
         </View>
 
-    </View>
+           
     </View>
   )
 }
@@ -79,6 +82,8 @@ const styles = StyleSheet.create({
 
 container:{
     marginHorizontal:20,
+    flex:1,
+    justifyContent:'center'
 },
 form:{
     flexDirection:'row',
@@ -90,16 +95,5 @@ input:{
     height:40, 
     borderRadius:7,
 },
-tempContainer:{
-    flexDirection:'row',
-    alignItems:'center',
-    backgroundColor:'#fff',
-    padding:10,
-    marginVertical:4,
-},
-tempText:{
-    flex:1,
-    paddingHorizontal:4,
-},
-})
 
+})

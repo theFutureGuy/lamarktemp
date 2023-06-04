@@ -12,6 +12,9 @@ export default function Login() {
  const [loading,setLoading] = useState(false); 
  const auth = FIREBASE_AUTH;
 
+
+
+
 const signIn = async () => {
     try {
         const response = await signInWithEmailAndPassword(auth,email,password);
@@ -20,7 +23,7 @@ const signIn = async () => {
     }
     catch (err:any){ console.log(err); 
         alert(err.message);}
-    finally { setLoading(true)}
+    finally { setLoading(false)}
 }
 
 const signUp = async () => {
@@ -43,8 +46,8 @@ return (
       <View style={style.container}>
         <Text>Lamark</Text>
         <KeyboardAvoidingView behavior='padding'>
-            <TextInput value={email} style={style.input} placeholder='EMAIL iD' autoCapitalize='none' />
-            <TextInput secureTextEntry={true} value={email} style={style.input} placeholder='PASSWORD' autoCapitalize='none' />
+            <TextInput  ref={(email) => {email}} style={style.input} placeholder='EMAIL iD' autoCapitalize='none' onChangeText={(email) => this.state.setEmail({email})} />
+            <TextInput secureTextEntry={true}  style={style.input} placeholder='PASSWORD' autoCapitalize='none' />
             {
                 loading ? <ActivityIndicator size="large" color="#0000f" /> :
                 <>
