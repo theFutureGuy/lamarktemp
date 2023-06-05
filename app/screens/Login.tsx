@@ -1,5 +1,4 @@
-import { ActivityIndicator, Button, KeyboardAvoidingView, StyleSheet, Text,TextInput,View } from 'react-native';
-import { StatusBar } from 'react-native';
+import { ActivityIndicator, Button, StyleSheet, Text,TextInput,View } from 'react-native';
 import React,{ useState } from 'react';
 import { FIREBASE_AUTH } from '../../firebaseConfig';
 import { signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
@@ -12,10 +11,8 @@ export default function Login() {
  const [loading,setLoading] = useState(false); 
  const auth = FIREBASE_AUTH;
 
-
-
-
 const signIn = async () => {
+    setLoading(true)
     try {
         const response = await signInWithEmailAndPassword(auth,email,password);
         const user = response.user;
@@ -24,6 +21,7 @@ const signIn = async () => {
     catch (err:any){ console.log(err); 
         alert(err.message);}
     finally { setLoading(false)}
+    console.log(loading);
 }
 
 const signUp = async () => {
@@ -35,28 +33,25 @@ const signUp = async () => {
     }
     catch (err:any){ alert(err.message);}
     finally{ setLoading(false);} 
+    
 }
 
 const signOut =async () => {
-    FIREBASE_AUTH.signOut();
     
 }
 
 return (
       <View style={style.container}>
         <Text>Lamark</Text>
-        <KeyboardAvoidingView behavior='padding'>
-            <TextInput  ref={(email) => {email}} style={style.input} placeholder='EMAIL iD' autoCapitalize='none' onChangeText={(email) => this.state.setEmail({email})} />
-            <TextInput secureTextEntry={true}  style={style.input} placeholder='PASSWORD' autoCapitalize='none' />
+            <TextInput  style={style.input} placeholder='EMAIL iD' autoCapitalize='none'  onChangeText={(text) => {setEmail(text)}} />
+            <TextInput secureTextEntry={true}  style={style.input} placeholder='PASSWORD' autoCapitalize='none' onChangeText={(text) => {setPassword(text)}} />
             {
                 loading ? <ActivityIndicator size="large" color="#0000f" /> :
                 <>
                     <Button title="Login by me" onPress={signIn} />
-                    <Button title="Register by clicking me" onPress={signUp} />
+                    <Button title="Register by click on me" onPress={signUp} />
                 </>
             }
-            
-        </KeyboardAvoidingView>
       </View>
   );
 };
