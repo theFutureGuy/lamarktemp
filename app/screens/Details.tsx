@@ -12,6 +12,7 @@ import {
   FlatList,
   TouchableHighlight,
   Pressable,
+  Button,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -39,7 +40,7 @@ declare module 'react-native-ble-manager' {
   }
 }
 
-const Details = () => {
+const Details = ({navigation}) => {
   const [isScanning, setIsScanning] = useState(false);
   const [peripherals, setPeripherals] = useState(
     new Map<Peripheral['id'], Peripheral>(),
@@ -328,6 +329,7 @@ const Details = () => {
     );
   };
 
+
   return (
     <>
       <StatusBar />
@@ -364,10 +366,16 @@ const Details = () => {
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
+
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      /> 
       </SafeAreaView>
     </>
   );
 };
+
 
 const boxShadow = {
   shadowColor: '#000',

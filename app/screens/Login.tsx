@@ -1,9 +1,16 @@
-import { ActivityIndicator, Button, StyleSheet, Text,TextInput,View } from 'react-native';
+import { ActivityIndicator, Button, StyleSheet, Text,TextInput,View ,TouchableOpacity,Image} from 'react-native';
 import React,{ useState } from 'react';
 import { FIREBASE_AUTH } from '../../firebaseConfig';
-import { signInWithEmailAndPassword,createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword,createUserWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 
+GoogleSignin.configure(() => {
+    webclientId:,
+    offlineAddress:,
+})
+
+}
 
 export default function Login() {
  const [email,setEmail] = useState('');
@@ -36,6 +43,18 @@ const signUp = async () => {
     
 }
 
+async function onGoogleButtonPress() {
+
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    const { idToken } = await GoogleSignin.signIn();
+  
+    // Create a Google credential with the token
+    const googleCredential = GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    return GoogleAuthProvider.credential(googleCredential);
+  }
+
 const signOut =async () => {
     
 }
@@ -50,6 +69,17 @@ return (
                 <>
                     <Button title="Login by me" onPress={signIn} />
                     <Button title="Register by click on me" onPress={signUp} />
+                    <View style={style.bottomContent}>
+                        <TouchableOpacity style={style.googleButton}>
+                        <Image
+                        style={style.googleIcon}
+                        source={{
+                            uri: "https://i.ibb.co/j82DCcR/search.png",
+                        }}
+                        />
+                        <Text style={style.googleButtonText}>Sign in with Google</Text>
+                        </TouchableOpacity>
+                    </View>
                 </>
             }
       </View>
@@ -69,6 +99,32 @@ const style = StyleSheet.create({
         borderRadius:4,
         padding:10,
         backgroundColor: "#fff"
-
-    }
+    },
+    bottomContent: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+       },
+    mainText: {
+        fontSize: 54,
+        color: "white",
+       },
+       googleButton: {
+        backgroundColor: "white",
+        borderRadius: 4,
+        paddingHorizontal: 34,
+        paddingVertical: 16,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+       },
+       googleButtonText: {
+        marginLeft: 16,
+        fontSize: 18,
+        fontWeight: '600'
+       },
+       googleIcon: {
+        height: 24,
+        width: 24
+       }
 });
