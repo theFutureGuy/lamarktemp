@@ -10,7 +10,7 @@ GoogleSignin.configure(() => {
     offlineAddress:,
 })
 
-}
+
 
 export default function Login() {
  const [email,setEmail] = useState('');
