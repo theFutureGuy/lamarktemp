@@ -1,8 +1,8 @@
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import React,{useEffect, useState} from 'react';
-import { FIREBASE_DB } from '../../firebaseConfig';
+import { FIREBASE_DB } from '../firbaseConfig';
 import { Firestore, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useAsyncStorage} from '@react-native-async-storage/async-storage'
 
 
 
@@ -10,7 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const List = ({navigation} : any) => {
 
     const [temps,setTemps] = useState<any[]>([1,2,3,4]);
-    const [temp,setTemp] = useState('');
+    const [temp,setTemp] = useState('' as any);
+    const [storageList,setStorageList] = useState([])
 
     useEffect(() => {
         const tempsRef = collection(FIREBASE_DB,'temps');
@@ -29,8 +30,6 @@ const List = ({navigation} : any) => {
             },
         })
         setTemp('23')
-        storeData(temp)
-        console.log(getData())
         return () => subscriber();
     },[]);
 
@@ -55,20 +54,12 @@ const List = ({navigation} : any) => {
         
     }*/
 
-    const storeData = async (value:any) => {
-        try {
-          const jsonValue = JSON.stringify(value);
-          await AsyncStorage.setItem('my-key', jsonValue);
-        } catch (e) {alert("Cant store data in Storage")}
-      };
-
-      const getData = async () => {
-        try {
-          const jsonValue = await AsyncStorage.getItem('my-key');
-          return jsonValue != null ? JSON.parse(jsonValue) : null;
-        }  catch (e) {alert("Cant store data in Storage")}
-      };
-    
+ const cacheList = async() => {
+  try {
+    AsyncStorage.
+  }
+  
+ }
 
   return (
     <View style={styles.container}>

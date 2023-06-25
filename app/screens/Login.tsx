@@ -2,13 +2,9 @@ import { ActivityIndicator, Button, StyleSheet, Text,TextInput,View ,TouchableOp
 import React,{ useState } from 'react';
 import { FIREBASE_AUTH } from '../../firebaseConfig';
 import { signInWithEmailAndPassword,createUserWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 
-GoogleSignin.configure(() => {
-    webclientId:,
-    offlineAddress:,
-})
+
 
 
 
@@ -43,20 +39,10 @@ const signUp = async () => {
     
 }
 
-async function onGoogleButtonPress() {
 
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    const { idToken } = await GoogleSignin.signIn();
-  
-    // Create a Google credential with the token
-    const googleCredential = GoogleAuthProvider.credential(idToken);
-  
-    // Sign-in the user with the credential
-    return GoogleAuthProvider.credential(googleCredential);
-  }
 
 const signOut =async () => {
-    
+    auth.signOut();
 }
 
 return (
