@@ -1,59 +1,60 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import  List  from './app/screens/List'
-import { NavigationContainer } from '@react-navigation/native';
-import Login from './app/screens/Login';
 import { useEffect, useState } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { FIREBASE_AUTH } from './firebaseConfig';
-import Details from './app/screens/Details';
-
-const Stack = createNativeStackNavigator();
-// const InsideLayout = createNativeStackNavigator( () => { 
-//   return(
-//     <InsideLayout.Navigator>
-//       <InsideLayout.Screen name="List" component={ List } />
-//       <InsideLayout.Screen name="Details" component={ Details } />
-//     </InsideLayout.Navigator>
-//   );
-// )}
- 
- 
+import { Alert, StyleSheet, Text, View, Button } from 'react-native';
+import Startpage from './app/screens/Startpage';
+import * as LocalAuthentication from "expo-local-authentication";
 
 export default function App() {
-  const [user,setUser] = useState<User | null>(null)
-  useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      // console.log('user',user);
-      setUser(user)
-    })
+
+  const [isBiometricSupported, setIsBiometricSupported] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
   
+  useEffect(()=>{
+      async()=>{
+        (async()=>{
+          const compatible = await LocalAuthentication.hasHardwareAsync();
+          setIsBiometricSupported(compatible);
+      })();
+      }
   })
-  
+
+  const onAuthenticate = ()=>{
+    const sysAuth = LocalAuthentication.authenticateAsync({
+      promptMessage : 'Please Authenticate to proceed',
+      fallbackLabel : 'Authenticate'
+    });
+    sysAuth.then((result)=>{
+      setIsAuthenticated(result.success);
+    })
+    .catch((error)=>{
+      Alert.alert(error);
+    });
+  }
+
+  const alertAuth = ()=>{
+    Alert.alert("Pleae Ensure that you enable Screenlock for Security purposes")
+  }
+
+
+  const PopAuth = ()=>{
+    
+    if(isAuthenticated)
+    {
+      return (<Startpage/>);
+    }
+    onAuthenticate();
+    return(<View style={styles.container}><Button title='Click here to Authenticate' onPress={onAuthenticate}></Button></View>);
+  }
 
   return (
-    
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>        
-      { user ? (
-      <Stack.Screen name='Inside' component={Details} options={{headerShown : false }} />
-      ): ( 
-          <Stack.Screen name='Login' component={Login} options={{headerShown : false }} />
-      )
-
-      }
-      </Stack.Navigator>
-   </NavigationContainer>
-
-  
+    <PopAuth/>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    flex:1,
+    justifyContent:'center',
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });

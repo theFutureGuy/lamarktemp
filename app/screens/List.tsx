@@ -1,6 +1,6 @@
 import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import React,{useEffect, useState} from 'react';
-import { FIREBASE_DB } from '../../firebaseConfig';
+import { FIREBASE_DB, FIREBASE_AUTH } from '../../firebaseConfig';
 import { Firestore, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {configureStore,createSlice} from '@reduxjs/toolkit'
@@ -17,7 +17,7 @@ const List = ({navigation} : any) => {
     const initialState = {
         temp:0,
     }
-    
+    const auth = FIREBASE_AUTH;
 
     useEffect(() => {
         const tempsRef = collection(FIREBASE_DB,'temps');
@@ -62,9 +62,15 @@ const List = ({navigation} : any) => {
         }  catch (e) {alert("Cant store data in Storage")}
       };
     
+      
+    const signOut =async () => {
+        auth.signOut();
+    }
+
 
   return (
     <View style={styles.container}>
+    <Button onPress={signOut} title="Sign Out" />
       <Text>List</Text>
         <View style={styles.form} >
             {/* <Button onPress={ () =>navigation.navigate('Details')} title='Open Details' /> */}

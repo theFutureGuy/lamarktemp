@@ -1,7 +1,7 @@
 import { ActivityIndicator, Button, StyleSheet, Text,TextInput,View ,TouchableOpacity,Image} from 'react-native';
 import React,{ useState } from 'react';
 import { FIREBASE_AUTH } from '../../firebaseConfig';
-import { signInWithEmailAndPassword,createUserWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithEmailAndPassword,createUserWithEmailAndPassword, GoogleAuthProvider, inMemoryPersistence, setPersistence, browserSessionPersistence, initializeAuth } from 'firebase/auth';
 
 
 
@@ -40,22 +40,16 @@ const signUp = async () => {
 }
 
 
-
-const signOut =async () => {
-    auth.signOut();
-}
-
 return (
       <View style={style.container}>
         <Text>Lamark</Text>
-            <TextInput  style={style.input} placeholder='EMAIL iD' autoCapitalize='none'  onChangeText={(text) => {setEmail(text)}} />
+            <TextInput  style={style.input} placeholder='EMAIL ID' autoCapitalize='none'  onChangeText={(text) => {setEmail(text)}} />
             <TextInput secureTextEntry={true}  style={style.input} placeholder='PASSWORD' autoCapitalize='none' onChangeText={(text) => {setPassword(text)}} />
             {
                 loading ? <ActivityIndicator size="large" color="#0000f" /> :
                 <>
                     <Button title="Login by me" onPress={signIn} />
                     <Button title="Register by click on me" onPress={signUp} />
-                    <View style={style.bottomContent}>
                         <TouchableOpacity style={style.googleButton}>
                         <Image
                         style={style.googleIcon}
@@ -65,7 +59,6 @@ return (
                         />
                         <Text style={style.googleButtonText}>Sign in with Google</Text>
                         </TouchableOpacity>
-                    </View>
                 </>
             }
       </View>
@@ -76,7 +69,8 @@ const style = StyleSheet.create({
     container:{
         marginHorizontal:20,
         flex:1,
-        justifyContent:'center'
+        justifyContent:'center',
+        gap:10
     },
     input: {
         marginVertical:4,
