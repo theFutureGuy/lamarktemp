@@ -6,7 +6,7 @@ import Login from './app/screens/Login';
 import { useEffect, useState } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './firebaseConfig';
-// import Details from './app/screens/Details';
+import Details from './app/screens/Details';
 
 const Stack = createNativeStackNavigator();
 // const InsideLayout = createNativeStackNavigator( () => { 

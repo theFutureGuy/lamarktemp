@@ -3,6 +3,8 @@ import React,{useEffect, useState} from 'react';
 import { FIREBASE_DB } from '../../firebaseConfig';
 import { Firestore, Timestamp, addDoc, collection, onSnapshot } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {configureStore,createSlice} from '@reduxjs/toolkit'
+
 
 
 
@@ -11,6 +13,11 @@ const List = ({navigation} : any) => {
 
     const [temps,setTemps] = useState<any[]>([1,2,3,4]);
     const [temp,setTemp] = useState('');
+
+    const initialState = {
+        temp:0,
+    }
+    
 
     useEffect(() => {
         const tempsRef = collection(FIREBASE_DB,'temps');
@@ -41,20 +48,6 @@ const List = ({navigation} : any) => {
        // console.log(temps)
     }
 
-
-    /*const renderTemps = async (item:any) => {
-        const toggleDone = async() => {}
-        const deleteTemp = async() => {}
-
-
-        // console.log("Temps : ",item)
-        return <View>
-                <TouchableOpacity  />
-                    <Text>{ {item.title} }</Text>
-               </View>
-        
-    }*/
-
     const storeData = async (value:any) => {
         try {
           const jsonValue = JSON.stringify(value);
@@ -84,6 +77,11 @@ const List = ({navigation} : any) => {
         {  temps.length > 0 && 
             <View>
             <FlatList data={temps} renderItem={(temps) => <Text>{temps.item}</Text>} keyExtractor={(temps) => temps.id} />
+            <View>
+                {/* <TouchableOpacity style={styles.button} onPress={()}> 
+                    <Text></Text>
+                </TouchableOpacity> */}
+            </View>
             </View>
         }
         </View>
@@ -112,5 +110,10 @@ input:{
     height:40, 
     borderRadius:7,
 },
+button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+  },
 
 })
